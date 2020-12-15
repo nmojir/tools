@@ -12,3 +12,9 @@ http-server -p 8085 -c-1 dist/<project-name>
 
 #update angular version
 npm install -g @angular/cli@latest
+
+#add new project
+ng new my-app
+
+#add material design
+ng add @angular/material
