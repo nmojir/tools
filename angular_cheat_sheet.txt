@@ -9,3 +9,6 @@ npm install --global http-server
 
 #run with node.js http-server
 http-server -p 8085 -c-1 dist/<project-name>
+
+#update angular version
+npm install -g @angular/cli@latest
