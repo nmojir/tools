@@ -21,3 +21,6 @@ ng add @angular/material
 
 #to turn off ng analytics
 ng analytics project off
+
+#generate new component
+ng generate component *component-name*
