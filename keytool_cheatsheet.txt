@@ -1,2 +1,5 @@
 #To create self-signed certificate and related keys
 keytool -genkey -keyalg RSA -alias selfsigned -keystore keystore.jks -storepass password -validity 360 -keysize 2048 -ext san=dns:mydns.com
+
+#import a certificate as root
+keytool -import -alias myCert -keystore cacerts -file mycert.cer
