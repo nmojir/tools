@@ -1,0 +1,86 @@
+---------------
+XxxRepo.java
+---------------
+
+public interface XxxRepo extends PagingAndSortingRepository<Xxx, Long>{
+
+}
+
+
+---------------
+XxxService.java
+---------------
+
+@Service
+public class XxxService {
+	
+	@Autowired
+	private XxxRepo xxxRepo;
+	
+	public Xxx create(Xxx xxx) {
+		xxx.setId(0);
+		return xxxRepo.save(xxx);
+	}
+	
+	public Xxx findById(long id) {
+		Optional<Xxx> optXxx = xxxRepo.findById(id);
+		if(optXxx.isEmpty())
+			throw new EntityNotFoundException(id, null);
+		return optXxx.get();
+	}
+	
+	public Xxx update(long id, Xxx xxx) {
+		findById(id);
+		xxx.setId(id);
+		return xxxRepo.save(xxx);
+	}
+	
+	public void remove(long id) {
+		xxxRepo.delete(findById(id));
+	}
+	
+	public Page<Xxx> search(SearchDto<Void> req) {
+		return xxxRepo.findAll(RepositoryHelper.generatePageRequestWithSort(
+				req.getPaging(), req.getSorting()));
+	}
+}
+
+
+---------------
+XxxController.java
+---------------
+
+@RestController
+@RequestMapping("/xxxs")
+public class XxxController {
+	
+	@Autowired
+	private XxxService xxxService;
+	
+	@PostMapping("/search")
+	public ResponseEntity<Stream<Xxx>> search(
+			@RequestBody SearchDto<Void> req) {
+		return ResponseEntityHelper.makeResponseEntity(xxxService.search(req));
+	}
+	
+	@PostMapping
+	public Xxx create(@RequestBody Xxx xxx) {
+		new PersianCharNormalizer().normalize(xxx);
+		return xxxService.create(xxx);
+	}
+	
+	@GetMapping("/{id}")
+	public Xxx get(@PathVariable long id) {
+		return xxxService.findById(id);
+	}
+	
+	@PutMapping("/{id}")
+	public Xxx update(@PathVariable long id, @RequestBody Xxx xxx) {
+		return xxxService.update(id, xxx);
+	}
+	
+	@DeleteMapping("/{id}")
+	public void delete(@PathVariable long id) {
+		xxxService.remove(id);
+	}
+}
