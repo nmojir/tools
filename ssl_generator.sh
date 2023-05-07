@@ -1,4 +1,4 @@
-!/bin/bash
+#!/bin/bash
 
 ROOT_CA_COMMON_NAME="Root CA"
 ROOT_CA_CERT_VALIDITY_IN_DAYS=3650
